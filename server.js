@@ -1,8 +1,5 @@
 var express = require("express");
-<<<<<<< HEAD
 var path = require("path");
-=======
->>>>>>> 0c2c71d318d94242862d5df15943ca1adc12b663
 var app = express();
 
 var port = process.env.PORT || 8080;
@@ -12,7 +9,7 @@ function onHttpStart(){
     console.log("Express http server listening on port " +port);
 }
 
-<<<<<<< HEAD
+
 //setting up css
 app.use(express.static('public'));
 
@@ -27,6 +24,3 @@ app.get("/about", function (req, res){
 });
 
 app.listen(port, onHttpStart);
-=======
-//setting up home page
->>>>>>> 0c2c71d318d94242862d5df15943ca1adc12b663
