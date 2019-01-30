@@ -25,7 +25,20 @@ app.get("/about", function (req, res){
 
 //employees route
 app.get("/employees", function (req, res){
-    res.json();
+
+});
+
+app.get("/managers", function (req, res){
+
+});
+
+app.get("/departments", function (req, res){
+
+});
+
+//Error Satuts Page (Error 404)
+app.use(function(req, res){
+    res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
 app.listen(port, onHttpStart);
