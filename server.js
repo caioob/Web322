@@ -16,7 +16,7 @@ var path = require("path");
 var app = express();
 var data = require("./data-service.js");
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8081;
 
 //Starting message
 function onHttpStart(){
@@ -24,7 +24,7 @@ function onHttpStart(){
 }
 
 //setting up css
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 //setting up home 
 app.get("/", function (req, res){
@@ -60,6 +60,10 @@ app.use(function(req, res){
     res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
+
 data.initialize()
-.then(() => {app.listen(port, onHttpStart)})
-.catch(() => {console.log("No results returned")})
+.then(function(data) {
+    app.listen(port, onHttpStart)
+    console.log(data);
+})
+.catch((err) => {console.log(err)})
