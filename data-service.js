@@ -1,5 +1,5 @@
-var employees[];
-var departments[];
+var employees = [];
+var departments = [];
 var fs = require("fs");
 
 //this function opens the json files
@@ -33,17 +33,17 @@ module.exports.getAllEmployees = function (){
 //this function returns the employees who are managers 
 module.exports.getManagers = function(){
     return new Promise(function (resolve, reject){
-        var managers[];
+        var managers = [];
         if(employees.length == 0) {reject("No results returned");}
         for(var i = 0; i < employees.length; i++){
-            if(employees[i].isManager == true) {managers[i] = employees[i];}
+            if(employees[i].isManager == true) {managers.push(employees[i]);}
         }
         resolve(managers);
     });
 }
 
 //this function returns the departments array
-module.exports.getManagers = function(){
+module.exports.getDepartments = function(){
     return new Promise(function (resolve, reject){
         if(departments.length == 0) {reject("No results returned");}
         resolve(departments);
