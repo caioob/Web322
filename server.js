@@ -1,3 +1,16 @@
+/*********************************************************************************
+*  WEB322 –Assignment 02
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
+*  of this 
+assignment has been copied manually or electronically from any other source 
+*  (including 3rd party web sites) or distributed to other students.
+* 
+*  Name: Caio Leonardo Bueno Basaglia Student ID: 152593174 Date: 31/1/2019
+*
+*  Online (Heroku) Link: https://evening-badlands-51858.herokuapp.com/
+*
+********************************************************************************/ 
+
 var express = require("express");
 var path = require("path");
 var app = express();
