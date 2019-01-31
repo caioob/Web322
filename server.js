@@ -60,18 +60,6 @@ app.use(function(req, res){
     res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
-app.get("/managers", function(req, res){
-
-});
-
-app.get("/departments", function(req, res){
-
-});
-
-app.use( function(req, res){
-    res.status(404).send("<h1 style='color: red;'> Error 404. Page not found.</h1>");
-});
-
 data.initialize()
 .then(() => {app.listen(port, onHttpStart)})
 .catch(() => {console.log("No results returned")})
