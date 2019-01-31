@@ -16,7 +16,7 @@ var path = require("path");
 var app = express();
 var data = require("./data-service.js");
 
-var port = process.env.PORT || 8081;
+var port = process.env.PORT || 8080;
 
 //Starting message
 function onHttpStart(){
