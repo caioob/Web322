@@ -24,6 +24,8 @@ function onHttpStart(){
 }
 
 //setting up css
+//app.use(express.static("public"));
+//app.use("/static", express.static(path.join(__dirname+"public")));
 app.use(express.static("public"));
 
 //setting up home 
