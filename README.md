@@ -1,2 +1,2 @@
 # Web322 ASSIGMENTS 
-Files used in all of web322 course assignments in seneca college
+My files from web322 assigments from Seneca college
