@@ -7,7 +7,7 @@ assignment has been copied manually or electronically from any other source
 * 
 *  Name: Caio Leonardo Bueno Basaglia Student ID: 152593174 Date: 31/1/2019
 *
-*  Online (Heroku) Link: https://evening-badlands-51858.herokuapp.com/
+*  Online (Heroku) Link: https://immense-taiga-37263.herokuapp.com/
 *
 ********************************************************************************/ 
 
@@ -89,6 +89,13 @@ app.use(function(req, res){
     res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5051752bccef7febf18d983245c6a9fee5747ae9
 data.initialize()
-.then(() => {app.listen(port, onHttpStart)})
-.catch(() => {console.log("No results returned")})
+.then(function(data) {
+    app.listen(port, onHttpStart)
+    console.log(data);
+})
+.catch((err) => {console.log(err)})
