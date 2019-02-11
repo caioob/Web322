@@ -16,6 +16,7 @@ var path = require("path");
 var app = express();
 var data = require("./data-service.js");
 var multer = require("multer");
+var fs = require("fs");
 
 var port = process.env.PORT || 8080;
 
@@ -33,7 +34,7 @@ const storage = multer.diskStorage({
 });
 
 //creating upload variable
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 //setting up css
 app.use(express.static("public"));
@@ -55,7 +56,14 @@ app.get("/employees", function (req, res){
     .catch((err) => {res.json(err)})
 });
 
-//emplyees/add route
+//Images get route 
+app.get("/images", function(req,res){
+    fs.readdir(path, function(err, items){
+        for(var j = 0; j < items.length; j++) {res.json(items);}
+    });
+});
+
+//employees/add route
 app.get("/employees/add", function(req,res){
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
@@ -89,10 +97,6 @@ app.use(function(req, res){
     res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 5051752bccef7febf18d983245c6a9fee5747ae9
 data.initialize()
 .then(function(data) {
     app.listen(port, onHttpStart)
