@@ -49,3 +49,15 @@ module.exports.getDepartments = function(){
         resolve(departments);
     });
 }
+
+//addEmployees function
+module.exports.addEmployees = function(employeeData){
+    return new Promise((resolve, reject) =>{
+        if(employeeData.isManager == null){employeeData.isManager == false;}
+        else{employeeData.isManager == true;}
+        employeeData.employeeNum = employees.length + 1;
+        employees[employees.length+1] = employeeData;
+        resolve(employees);
+
+    });
+}

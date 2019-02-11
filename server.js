@@ -10,14 +10,16 @@ assignment has been copied manually or electronically from any other source
 *  Online (Heroku) Link: https://immense-taiga-37263.herokuapp.com/
 *
 ********************************************************************************/ 
-
+//dependencies declaration
 var express = require("express");
 var path = require("path");
 var app = express();
 var data = require("./data-service.js");
 var multer = require("multer");
 var fs = require("fs");
+var bodyParser = require("body-parser");
 
+//port definition
 var port = process.env.PORT || 8080;
 
 //Starting message
@@ -29,12 +31,15 @@ function onHttpStart(){
 const storage = multer.diskStorage({
     destination: "./public/images/uploaded",
     filename: function (req, file, cb){
-        cb(null, Date.now()+path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
 //creating upload variable
 const upload = multer({storage: storage});
+
+//using body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //setting up css
 app.use(express.static("public"));
@@ -56,16 +61,26 @@ app.get("/employees", function (req, res){
     .catch((err) => {res.json(err)})
 });
 
-//Images get route 
-app.get("/images", function(req,res){
-    fs.readdir(path, function(err, items){
-        for(var j = 0; j < items.length; j++) {res.json(items);}
-    });
-});
-
 //employees/add route
 app.get("/employees/add", function(req,res){
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+});
+
+//employees/add post route
+app.post("employees/add", (req, res) => { 
+    data.addEmployee()
+    .then(() => {
+        res.redirect("employees");
+    })
+    .catch()
+});
+
+//Images get route 
+app.get("/images", function(req,res){
+    var here = path.join(__dirname, "/public/images/uploaded");
+    fs.readdir(here, function(err, files){
+        res.json(files);
+    });
 });
 
 //Images/add route
@@ -74,7 +89,7 @@ app.get("/images/add", function(req,res){
 });
 
 //Images post route
-app.post("/images/add", upload.single("photo"), function(req, res){
+app.post("/images/add", upload.single("imageFile"), function(req, res){
     res.redirect("/images");
 });
 
@@ -84,6 +99,7 @@ app.get("/managers", function (req, res){
     .then((data) => {res.json(data)})
     .catch((err) => {res.json(err)})
 });
+
 //departments route
 app.get("/departments", function (req, res){
     data.getDepartments()
