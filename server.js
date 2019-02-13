@@ -67,7 +67,7 @@ app.get("/employees/add", function(req,res){
 });
 
 //employees/add post route
-app.post("employees/add", (req, res) => { 
+app.post("/employees/add", (req, res) => { 
     data.addEmployee()
     .then(() => {
         res.redirect("employees");
