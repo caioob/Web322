@@ -53,8 +53,8 @@ module.exports.getDepartments = function(){
 //addEmployees function
 module.exports.addEmployee = function(employeeData){
     return new Promise((resolve, reject) =>{
-        if(employeeData.isManager == null){employeeData.isManager == false;}
-        else{employeeData.isManager == true;}
+        if(employeeData.isManager == "on"){employeeData.isManager = true;}
+        else{employeeData.isManager = false;}
         employeeData.employeeNum = employees.length + 1;
         employees.push(employeeData);
         resolve(employees);

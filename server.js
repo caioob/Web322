@@ -67,19 +67,20 @@ app.get("/employees/add", function(req,res){
 });
 
 //employees/add post route
-app.post("/employees/add", (req, res) => { 
-    data.addEmployee()
+app.post("/employees/add", upload.single("photo"),(req, res) => { 
+    const  employeeData = req.body;
+    data.addEmployee(employeeData)
     .then(() => {
-        res.redirect("employees");
+        res.redirect("/employees");
     })
-    .catch()
+    .catch(() => req.send("Employee creation failed."))
 });
 
 //Images get route 
 app.get("/images", function(req,res){
     var here = path.join(__dirname, "/public/images/uploaded");
     fs.readdir(here, function(err, files){
-        res.json(files);
+        res.send({images: files});
     });
 });
 
