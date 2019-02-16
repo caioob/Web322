@@ -135,7 +135,8 @@ app.get("/departments", (req, res) => {
 
 //Error Satuts Page (Error 404)
 app.use((req, res) => {
-    res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
+    //res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
+    res.status(404).sendFile(path.join(__dirname, "/views/404.html"));
 });
 
 data.initialize()

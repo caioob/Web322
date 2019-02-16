@@ -2,3 +2,9 @@ body{
     background-color: #ffede5;
     font-family: 'Cairo', sans-serif;
 }
+
+#error{
+    color: #FF4872;
+    font-size: 23px;
+    padding: 55px;
+}
