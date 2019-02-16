@@ -61,3 +61,39 @@ module.exports.addEmployee = function(employeeData){
 
     });
 }
+
+//getEmployeesByStatus function
+module.exports.getEmployeesByStatus = (status) => {
+    return new Promise((resolve, reject) => {
+        var returnStatus = employees.filter(employees => employees.status == status);
+        if(employees.length == 0){ reject("No Data available!"); }
+        else{ resolve(returnStatus); }
+    });
+}
+
+//getEmployeesByDepartment function
+module.exports.getEmployeesByDepartment = (Department) => {
+    return new Promise((resolve, reject) => {
+        var returnDepartment = employees.filter(employees => employees.department == Department);
+        if(employees.length == 0){ reject("No Data available!"); }
+        else{ resolve(returnDepartment); }
+    });
+}
+
+//getEmployeesByManager function
+module.exports.getEmployeesByManager = (Manager) => {
+    return new Promise((resolve, reject) => {
+        var returnManager = employees.filter(employees => employees.department == Manager);
+        if(employees.length == 0){ reject("No Data available!"); }
+        else{ resolve(returnManager); }
+    });
+}
+
+//getEmployeesByNum function
+module.exports.getEmployeesByNum = (Num) => {
+    return new Promise((resolve, reject) => {
+        var returnNum = employees.filter(employees => employees.employeeNum == Num);
+        if(employees.length == 0){ reject("No Data available!"); }
+        else{ resolve(returnNum); }
+    });
+}

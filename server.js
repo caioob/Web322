@@ -30,7 +30,7 @@ function onHttpStart(){
 //multer setup
 const storage = multer.diskStorage({
     destination: "./public/images/uploaded",
-    filename: function (req, file, cb){
+    filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
@@ -45,24 +45,50 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/public/css")));
 
 //setting up home 
-app.get("/", function (req, res){
+app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/views/home.html"));
 });
 
 //setting up about
-app.get("/about", function (req, res){
+app.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "/views/about.html"));
 });
 
 //employees route
-app.get("/employees", function (req, res){
-    data.getAllEmployees()
-    .then((data) => {res.json(data)})
-    .catch((err) => {res.json(err)})
+app.get("/employees", (req, res) => {
+    if(req.query.status){
+        data.getEmployeesByStatus(req.query.status)
+        .then((data) => res.json(data))
+        .catch((err) => res.json({"message": err})) 
+    }
+    else if(req.query.departments){
+        data.getEmployeesByDepartment(req.query.departments)
+        .then((data) => res.json(data))
+        .catch((err) => res.json({"message": err})) 
+        
+    }
+    else if(req.query.manager){
+        data.getEmployeesByManager(req.query.manager)
+        .then((data) => res.json(data))
+        .catch((err) => res.json({"message": err})) 
+    }
+    else {
+        data.getAllEmployees()
+        .then((data) => res.json(data))
+        .catch((err) => res.json(err))
+    }
+    
 });
 
+//employees/status route
+/*app.get("/employees/value", (req, res) => {
+    data.getEmployeesByNum(data)
+    .then((data) => res.json(data))
+    .catch((err) => res.json(err))
+});*/
+
 //employees/add route
-app.get("/employees/add", function(req,res){
+app.get("/employees/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
 
@@ -70,39 +96,37 @@ app.get("/employees/add", function(req,res){
 app.post("/employees/add", upload.single("photo"),(req, res) => { 
     const  employeeData = req.body;
     data.addEmployee(employeeData)
-    .then(() => {
-        res.redirect("/employees");
-    })
+    .then(() => res.redirect("/employees"))
     .catch(() => req.send("Employee creation failed."))
 });
 
 //Images get route 
-app.get("/images", function(req,res){
+app.get("/images", (req,res) => {
     var here = path.join(__dirname, "/public/images/uploaded");
-    fs.readdir(here, function(err, files){
+    fs.readdir(here, (err, files) => {
         res.send({images: files});
     });
 });
 
 //Images/add route
-app.get("/images/add", function(req,res){
+app.get("/images/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
 });
 
 //Images post route
-app.post("/images/add", upload.single("imageFile"), function(req, res){
+app.post("/images/add", upload.single("imageFile"), (req,  res) => {
     res.redirect("/images");
 });
 
 //managers route
-app.get("/managers", function (req, res){
+app.get("/managers",  (req, res) => { 
     data.getManagers()
     .then((data) => {res.json(data)})
     .catch((err) => {res.json(err)})
 });
 
 //departments route
-app.get("/departments", function (req, res){
+app.get("/departments", (req, res) => {
     data.getDepartments()
     .then((data) => {res.json(data)})
     .catch((err) => {res.json(err)})
@@ -110,12 +134,12 @@ app.get("/departments", function (req, res){
 
 
 //Error Satuts Page (Error 404)
-app.use(function(req, res){
+app.use((req, res) => {
     res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
 });
 
 data.initialize()
-.then(function(data) {
+.then((data) => {
     app.listen(port, onHttpStart)
     console.log(data);
 })
