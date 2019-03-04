@@ -83,7 +83,7 @@ module.exports.getEmployeesByDepartment = (Department) => {
 //getEmployeesByManager function
 module.exports.getEmployeesByManager = (Manager) => {
     return new Promise((resolve, reject) => {
-        var returnManager = employees.filter(employees => employees.department == Manager);
+        var returnManager = employees.filter(employees => employees.employeeManagerNum == Manager);
         if(employees.length == 0){ reject("No Data available!"); }
         else{ resolve(returnManager); }
     });
@@ -92,7 +92,7 @@ module.exports.getEmployeesByManager = (Manager) => {
 //getEmployeesByNum function
 module.exports.getEmployeesByNum = (Num) => {
     return new Promise((resolve, reject) => {
-        var returnNum = employees.filter(employees => employees.employeeNum == Num);
+        var returnNum = employees.filter(employees.employeeNum == Num);
         if(employees.length == 0){ reject("No Data available!"); }
         else{ resolve(returnNum); }
     });

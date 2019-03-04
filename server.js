@@ -61,8 +61,8 @@ app.get("/employees", (req, res) => {
         .then((data) => res.json(data))
         .catch((err) => res.json({"message": err})) 
     }
-    else if(req.query.departments){
-        data.getEmployeesByDepartment(req.query.departments)
+    else if(req.query.department){
+        data.getEmployeesByDepartment(req.query.department)
         .then((data) => res.json(data))
         .catch((err) => res.json({"message": err})) 
         
@@ -81,11 +81,11 @@ app.get("/employees", (req, res) => {
 });
 
 //employees/status route
-/*app.get("/employees/value", (req, res) => {
+app.get("/employees/value", (req, res) => {
     data.getEmployeesByNum(data)
     .then((data) => res.json(data))
     .catch((err) => res.json(err))
-});*/
+});
 
 //employees/add route
 app.get("/employees/add", (req,res) => {
