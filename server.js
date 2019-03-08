@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  WEB322 –Assignment 02
+*  WEB322 –Assignment 04
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
 *  of this 
 assignment has been copied manually or electronically from any other source 
@@ -18,6 +18,7 @@ var data = require("./data-service.js");
 var multer = require("multer");
 var fs = require("fs");
 var bodyParser = require("body-parser");
+const exphbs = require("express-handlebars");
 
 //port definition
 var port = process.env.PORT || 8080;
@@ -35,8 +36,40 @@ const storage = multer.diskStorage({
     }
 });
 
+
+
 //creating upload variable
 const upload = multer({storage: storage});
+
+//handlebars setup
+app.engine('.hbs', exphbs({ 
+    extname: '.hbs',
+    defaultLayout: 'main',
+    helpers: {
+        navLink: function(url, options){
+            return '<li' + 
+                ((url == app.locals.activeRoute) ? ' class="active" ' : '') + 
+                '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+        },
+        equal: function (lvalue, rvalue, options) {
+            if (arguments.length < 3)
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue) {
+                return options.inverse(this);
+            } else {
+                return options.fn(this);
+            }
+        }
+    }
+}));
+app.set('view engine', '.hbs');
+
+//setting up middleware
+app.use(function(req,res,next){
+    let route = req.baseUrl + req.path;
+    app.locals.activeRoute = (route == "/") ? "/" : route.replace(/\/$/, "");
+    next();
+});
 
 //using body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,12 +79,12 @@ app.use(express.static(path.join(__dirname, "/public/css")));
 
 //setting up home 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/home.html"));
+    res.render('home');
 });
 
 //setting up about
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/about.html"));
+    res.render('about');
 });
 
 //employees route
@@ -89,7 +122,7 @@ app.get("/employees/value", (req, res) => {
 
 //employees/add route
 app.get("/employees/add", (req,res) => {
-    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+    res.render('addEmployee.hbs');
 });
 
 //employees/add post route
@@ -104,13 +137,14 @@ app.post("/employees/add", upload.single("photo"),(req, res) => {
 app.get("/images", (req,res) => {
     var here = path.join(__dirname, "/public/images/uploaded");
     fs.readdir(here, (err, files) => {
-        res.send({images: files});
+        //res.json({images: files});
+        res.render("images", images);
     });
 });
 
 //Images/add route
 app.get("/images/add", (req,res) => {
-    res.sendFile(path.join(__dirname, "/views/addImage.html"));
+    res.render('addImage');
 });
 
 //Images post route
