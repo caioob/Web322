@@ -75,6 +75,7 @@ app.use(function(req,res,next){
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //setting up css
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.static(path.join(__dirname, "/public/css")));
 
 //setting up home 
@@ -91,33 +92,49 @@ app.get("/about", (req, res) => {
 app.get("/employees", (req, res) => {
     if(req.query.status){
         data.getEmployeesByStatus(req.query.status)
-        .then((data) => res.json(data))
-        .catch((err) => res.json({"message": err})) 
+        .then((data) => res.render("employees", {
+            data: data
+        }))
+        .catch((err) => res.render({message: "no results"}))
     }
     else if(req.query.department){
         data.getEmployeesByDepartment(req.query.department)
-        .then((data) => res.json(data))
-        .catch((err) => res.json({"message": err})) 
+        .then((data) => res.render("employees", {
+            data: data
+        }))
+        .catch((err) => res.render({message: "no results"}))
         
     }
     else if(req.query.manager){
         data.getEmployeesByManager(req.query.manager)
-        .then((data) => res.json(data))
-        .catch((err) => res.json({"message": err})) 
+        .then((data) => res.render("employees", {
+            data: data
+        }))
+        .catch((err) => res.render({message: "no results"})) 
     }
     else {
         data.getAllEmployees()
-        .then((data) => res.json(data))
-        .catch((err) => res.json(err))
+        .then((data) => res.render("employees", {
+            data: data
+        }))
+        .catch((err) => res.render({message: "no results"}))
     }
     
 });
 
-//employees/status route
-app.get("/employees/value", (req, res) => {
-    data.getEmployeesByNum(data)
-    .then((data) => res.json(data))
-    .catch((err) => res.json(err))
+//employee/:num route
+app.get("/employee/:empNum", (req, res) => {
+    data.getEmployeesByNum(req.params.empNum)
+    .then((data) => res.render("employee", { 
+        data: data 
+    }))
+    .catch((err) => res.render({message: "no results"}))
+});
+
+app.post("/employee/update", (req, res) => {
+    console.log(req.body);
+    data.updateEmployee(req.body)
+    .then(() =>res.redirect("/employees"))
 });
 
 //employees/add route
@@ -135,10 +152,10 @@ app.post("/employees/add", upload.single("photo"),(req, res) => {
 
 //Images get route 
 app.get("/images", (req,res) => {
-    var here = path.join(__dirname, "/public/images/uploaded");
+    var here = path.join(__dirname, "public/images/uploaded");
     fs.readdir(here, (err, files) => {
-        //res.json({images: files});
-        res.render("images", images);
+        res.render("images",{ 
+            data: files});
     });
 });
 
@@ -155,21 +172,20 @@ app.post("/images/add", upload.single("imageFile"), (req,  res) => {
 //managers route
 app.get("/managers",  (req, res) => { 
     data.getManagers()
-    .then((data) => {res.json(data)})
-    .catch((err) => {res.json(err)})
+    .then((data) => res.render("departments", {data: data}))
+    .catch((err) => res.json(err))
 });
 
 //departments route
 app.get("/departments", (req, res) => {
     data.getDepartments()
-    .then((data) => {res.json(data)})
-    .catch((err) => {res.json(err)})
+    .then((data) => res.render("departments", {data: data}))
+    .catch((err) => res.json(err))
 });
 
 
 //Error Satuts Page (Error 404)
 app.use((req, res) => {
-    //res.status(404).send("<h1 style='color: red;'>Error 404. Page Not Found</h1>");
     res.status(404).sendFile(path.join(__dirname, "/views/404.html"));
 });
 

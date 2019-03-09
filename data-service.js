@@ -12,12 +12,12 @@ module.exports.initialize = function(){
             });
             fs.readFile("./data/employees.json", (err, data) =>{
                 if (err) {reject(err);}
-                employees = JSON.parse(data);                
+                employees = JSON.parse(data);
             });
             resolve("File read completed successfully");
         }
         catch{
-           reject("File read failed"); 
+           reject("File read failed");
         }
     });
 }
@@ -30,7 +30,7 @@ module.exports.getAllEmployees = function (){
     });
 }
 
-//this function returns the employees who are managers 
+//this function returns the employees who are managers
 module.exports.getManagers = function(){
     return new Promise(function (resolve, reject){
         var managers = [];
@@ -92,8 +92,17 @@ module.exports.getEmployeesByManager = (Manager) => {
 //getEmployeesByNum function
 module.exports.getEmployeesByNum = (Num) => {
     return new Promise((resolve, reject) => {
-        var returnNum = employees.filter(employees.employeeNum == Num);
+        var returnNum = employees.filter(employees => employees.employeeNum == Num);
         if(employees.length == 0){ reject("No Data available!"); }
         else{ resolve(returnNum); }
     });
+}
+
+//updateEmployee function
+module.exports.updateEmployee = (employeeData) =>{
+    return new Promise((resolve, reject)=>{
+        var index = employees.findIndex(employees => employees.employeeNum == employeeData.employeeNum);
+        employees.splice(index, 1, employeeData);
+        resolve();
+    })
 }
