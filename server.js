@@ -11,14 +11,15 @@ assignment has been copied manually or electronically from any other source
 *
 ********************************************************************************/ 
 //dependencies declaration
-var express = require("express");
-var path = require("path");
-var app = express();
-var data = require("./data-service.js");
-var multer = require("multer");
-var fs = require("fs");
-var bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path");
+const app = express();
+const data = require("./data-service.js");
+const multer = require("multer");
+const fs = require("fs");
+const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
+const dataServiceAuth = require("./data-service-auth.js");
 
 //port definition
 var port = process.env.PORT || 8080;
