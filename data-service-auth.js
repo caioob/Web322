@@ -32,3 +32,41 @@ module.exports.Initialize = () => {
         });
     });
 }
+
+module.exports.registerUser = (userData) => {
+    return new Promise((resolve, reject) => {
+        if(userData.password != userData.password2) {reject("Passwords do not match");}
+        else{
+            let newUser = new User(userData);
+            newUser.save((err) => {
+                if(err === 11000){reject("User Name already taken");}
+                else if (err != 11000){reject("There was an error creating the user:" +err)}
+                else if (err == null){resolve()}
+            })
+        }
+    });
+}
+
+module.exports.checkUser = (userData) => {
+    return new Promise ((resolve, reject) => {
+        User.find({userName: userData.userName})
+        .exec()
+        .then ((users) => {
+            if (users == null) {reject("Unable to find user:")}
+            else if(users[0].password != userData.password){
+                reject("Incorrect Password for user:" +userData.userName);
+            }
+            else if(users.password == userData.password) {
+                users[0].push({dateTime: (new Date()).toString(), userAgent: userData.userAgent});
+                User.update(
+                    {userName: userData.userName},
+                    {$set: {loginHistory: users[0].loginHistory}}
+                )
+                .exec()
+                .then(() =>{resolve(users[0])})
+                .catch(() => {reject("There was an error verifying the user:" +err);}) 
+            }
+        })
+        .catch(() => {reject("Unable to find user:" +userData.userName);}) 
+    })
+}
