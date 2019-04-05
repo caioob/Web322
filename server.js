@@ -257,6 +257,7 @@ app.use((req, res) => {
 });
 
 data.initialize()
+.then(dataServiceAuth.initialize)
 .then((data) => {
     app.listen(port, onHttpStart)
     console.log(data);
