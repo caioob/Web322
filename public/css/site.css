@@ -8,3 +8,7 @@ body{
     font-size: 23px;
     padding: 55px;
 }
+
+#login #register{
+    background-color: #e5cbc0;
+}
